@@ -12,20 +12,20 @@ func ProcessBrainFuck(content []byte) error {
 	loopPointers := stack.NewStack[uint16]()
 
 	for _, char := range content {
-		processCharacter(char, dataPointers, &currentPointer, loopPointers)
+		processCharacter(char, &dataPointers, &currentPointer, loopPointers)
 	}
 	return nil
 }
 
-func processCharacter(char byte, dataPointers [50000]uint8, currentPointer *uint16, loopPointers *stack.Stack[uint16]) {
+func processCharacter(char byte, dataPointers *[50000]uint8, currentPointer *uint16, loopPointers *stack.Stack[uint16]) {
 	var err error
 	switch char {
 	case '>':
 		err = handleMoveRight(currentPointer)
-	// case '<':
-	// 	handleMoveLeft()
-	// case '+':
-	// 	handleIncrement()
+	case '<':
+		err = handleMoveLeft(currentPointer)
+	case '+':
+		handleIncrement(dataPointers, currentPointer)
 	// case '-':
 	// 	handleDecrement()
 	// case '.':
@@ -56,4 +56,8 @@ func handleMoveLeft(currentPointer *uint16) error {
 	}
 	*currentPointer--
 	return nil
+}
+
+func handleIncrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
+	dataPointers[*currentPointer]++
 }

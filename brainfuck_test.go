@@ -31,3 +31,14 @@ func TestHandleMoveLeft(t *testing.T) {
 		t.Errorf("Expected pointer to move left to 1, got %d", invalidPointer)
 	}
 }
+
+func TestHandleIncrement(t *testing.T) {
+	// Test case for incrementing the value at the current pointer
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+
+	handleIncrement(&dataPointers, &currentPointer)
+	if dataPointers[currentPointer] != 1 {
+		t.Errorf("Expected value at pointer %d to be 1, got %d", currentPointer, dataPointers[currentPointer])
+	}
+}
