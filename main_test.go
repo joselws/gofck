@@ -5,12 +5,12 @@ import "testing"
 func TestGetFileName(t *testing.T) {
 	tests := []struct {
 		args           []string
-		expectedResult []string
+		expectedResult string
 		expectedError  error
 	}{
-		{[]string{"arg1", "arg2"}, []string{"arg1", "arg2"}, nil},
-		{[]string{"arg1"}, []string{}, ErrInvalidCLIArgsLength},
-		{[]string{}, []string{}, ErrInvalidCLIArgsLength},
+		{[]string{"arg1", "arg2"}, "arg2", nil},
+		{[]string{"arg1"}, "", ErrInvalidCLIArgsLength},
+		{[]string{}, "", ErrInvalidCLIArgsLength},
 	}
 
 	for _, test := range tests {
