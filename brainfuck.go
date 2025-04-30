@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/joselws/go-utils/stack"
 )
 
 const maxDataSize uint16 = 50000
@@ -11,37 +9,35 @@ const maxDataSize uint16 = 50000
 func ProcessBrainFuck(content []byte) error {
 	dataPointers := [maxDataSize]uint8{}
 	var currentPointer uint16
-	loopPointers := stack.NewStack[uint16]()
+	// loopPointers := stack.NewStack[int]()
+	contentSize := len(content)
+	contentIndex := 0
 
-	for _, char := range content {
-		processCharacter(char, &dataPointers, &currentPointer, loopPointers)
+	for contentIndex < contentSize {
+		char := content[contentIndex]
+		var err error
+		switch char {
+		case '>':
+			err = handleMoveRight(&currentPointer)
+		case '<':
+			err = handleMoveLeft(&currentPointer)
+		case '+':
+			handleIncrement(&dataPointers, &currentPointer)
+		case '-':
+			handleDecrement(&dataPointers, &currentPointer)
+		case '.':
+			handleOutput(&dataPointers, &currentPointer)
+			// case '[':
+			// 	err = handleLoopStart(content, &contentIndex, &loopPointers, &dataPointers, &currentPointer)
+			// case ']':
+			// 	handleLoopEnd()
+			contentIndex++
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
-}
-
-func processCharacter(char byte, dataPointers *[50000]uint8, currentPointer *uint16, loopPointers *stack.Stack[uint16]) {
-	var err error
-	switch char {
-	case '>':
-		err = handleMoveRight(currentPointer)
-	case '<':
-		err = handleMoveLeft(currentPointer)
-	case '+':
-		handleIncrement(dataPointers, currentPointer)
-	case '-':
-		handleDecrement(dataPointers, currentPointer)
-	case '.':
-		handleOutput(dataPointers, currentPointer)
-	case ',':
-		return
-	// case '[':
-	// 	handleLoopStart()
-	// case ']':
-	// 	handleLoopEnd()
-	default:
-		return
-	}
-	panic(err)
 }
 
 func handleMoveRight(currentPointer *uint16) error {
