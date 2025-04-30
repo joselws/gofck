@@ -2,16 +2,29 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
 )
 
 func main() {
-	// dataArray := [5000]uint8{}
-	fmt.Println("Hello, World!")
-	fmt.Println("This is a simple Go program.")
-	fmt.Println("It prints a message to the console.")
-	fmt.Println("Goodbye!")
-	// var arrayPointer uint16
-	// args := os.Args[1:]
+	inFile, err := getFileName(os.Args)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	_, err = getFileContents(inFile)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// err := processBrainFuck(brainFuckCode)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// fmt.Println("Output written to", outFile)
 }
 
 // func parseCharacter(char uint8) {
@@ -37,9 +50,21 @@ func main() {
 // 	}
 // }
 
-func getParameters(args []string) ([]string, error) {
+func getFileName(args []string) (string, error) {
 	if len(args) != 2 {
-		return []string{}, ErrInvalidCLIArgsLength
+		return "", ErrInvalidCLIArgsLength
 	}
-	return args, nil
+	return args[1], nil
+}
+
+func getFileContents(filename string) (string, error) {
+	// Simulate file reading
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return "", ErrFileDoesNotExist
+	}
+	if !strings.HasSuffix(filename, ".bf") {
+		return "", ErrBadFileFormat
+	}
+	return string(data), nil
 }
