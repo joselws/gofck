@@ -4,8 +4,9 @@ import (
 	"github.com/joselws/go-utils/stack"
 )
 
-func processBrainFuck(content []byte) error {
-	const maxDataSize uint16 = 50000
+const maxDataSize uint16 = 50000
+
+func ProcessBrainFuck(content []byte) error {
 	dataPointers := [maxDataSize]uint8{}
 	var currentPointer uint16
 	loopPointers := stack.NewStack[uint16]()
@@ -17,9 +18,10 @@ func processBrainFuck(content []byte) error {
 }
 
 func processCharacter(char byte, dataPointers [50000]uint8, currentPointer *uint16, loopPointers *stack.Stack[uint16]) {
+	var err error
 	switch char {
-	// case '>':
-	// 	handleMoveRight()
+	case '>':
+		err = handleMoveRight(currentPointer)
 	// case '<':
 	// 	handleMoveLeft()
 	// case '+':
@@ -37,4 +39,13 @@ func processCharacter(char byte, dataPointers [50000]uint8, currentPointer *uint
 	default:
 		return
 	}
+	panic(err)
+}
+
+func handleMoveRight(currentPointer *uint16) error {
+	*currentPointer++
+	if *currentPointer >= maxDataSize {
+		return ErrInvalidPointer
+	}
+	return nil
 }

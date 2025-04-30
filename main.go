@@ -19,7 +19,7 @@ func main() {
 		return
 	}
 
-	err = processBrainFuck(brainFuckCode)
+	err = ProcessBrainFuck(brainFuckCode)
 	if err != nil {
 		fmt.Println(err)
 		return
