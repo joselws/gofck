@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/joselws/go-utils/stack"
 )
 
@@ -28,10 +30,10 @@ func processCharacter(char byte, dataPointers *[50000]uint8, currentPointer *uin
 		handleIncrement(dataPointers, currentPointer)
 	case '-':
 		handleDecrement(dataPointers, currentPointer)
-	// case '.':
-	// 	handleOutput()
-	// case ',':
-	// 	return
+	case '.':
+		handleOutput(dataPointers, currentPointer)
+	case ',':
+		return
 	// case '[':
 	// 	handleLoopStart()
 	// case ']':
@@ -64,4 +66,8 @@ func handleIncrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
 
 func handleDecrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
 	dataPointers[*currentPointer]--
+}
+
+func handleOutput(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
+	fmt.Print(string(dataPointers[*currentPointer]))
 }
