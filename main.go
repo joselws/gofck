@@ -13,42 +13,18 @@ func main() {
 		return
 	}
 
-	_, err = getFileContents(inFile)
+	brainFuckCode, err := getFileContents(inFile)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// err := processBrainFuck(brainFuckCode)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// fmt.Println("Output written to", outFile)
+	err = processBrainFuck(brainFuckCode)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
-
-// func parseCharacter(char uint8) {
-// 	switch char {
-// 	case '>':
-// 		fmt.Println("Move right")
-// 	case '<':
-// 		fmt.Println("Move left")
-// 	case '+':
-// 		fmt.Println("Increment value")
-// 	case '-':
-// 		fmt.Println("Decrement value")
-// 	case '.':
-// 		fmt.Println("Output value")
-// 	case ',':
-// 		fmt.Println("Input value")
-// 	case '[':
-// 		fmt.Println("Start loop")
-// 	case ']':
-// 		fmt.Println("End loop")
-// 	default:
-// 		return
-// 	}
-// }
 
 func getFileName(args []string) (string, error) {
 	if len(args) != 2 {
@@ -57,14 +33,14 @@ func getFileName(args []string) (string, error) {
 	return args[1], nil
 }
 
-func getFileContents(filename string) (string, error) {
+func getFileContents(filename string) ([]byte, error) {
 	// Simulate file reading
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return "", ErrFileDoesNotExist
+		return data, ErrFileDoesNotExist
 	}
 	if !strings.HasSuffix(filename, ".bf") {
-		return "", ErrBadFileFormat
+		return data, ErrBadFileFormat
 	}
-	return string(data), nil
+	return data, nil
 }
