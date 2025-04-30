@@ -49,3 +49,11 @@ func handleMoveRight(currentPointer *uint16) error {
 	}
 	return nil
 }
+
+func handleMoveLeft(currentPointer *uint16) error {
+	if *currentPointer == 0 {
+		return ErrInvalidPointer
+	}
+	*currentPointer--
+	return nil
+}

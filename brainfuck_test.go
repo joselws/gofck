@@ -16,3 +16,18 @@ func TestHandleMoveRight(t *testing.T) {
 		t.Errorf("Expected pointer to move right to 1, got %d", validPointer)
 	}
 }
+
+func TestHandleMoveLeft(t *testing.T) {
+	// Test case for moving the pointer to the left
+	validPointer := uint16(maxDataSize - 1)
+	invalidPointer := uint16(0)
+
+	err := handleMoveLeft(&validPointer)
+	if validPointer == 0 || err != nil {
+		t.Errorf("Expected pointer to move left to 1, got %d", validPointer)
+	}
+	err = handleMoveLeft(&invalidPointer)
+	if err != ErrInvalidPointer {
+		t.Errorf("Expected pointer to move left to 1, got %d", invalidPointer)
+	}
+}
