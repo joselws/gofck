@@ -42,3 +42,15 @@ func TestHandleIncrement(t *testing.T) {
 		t.Errorf("Expected value at pointer %d to be 1, got %d", currentPointer, dataPointers[currentPointer])
 	}
 }
+
+func TestHandleDecrement(t *testing.T) {
+	// Test case for incrementing the value at the current pointer
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+	dataPointers[currentPointer] = 2
+
+	handleDecrement(&dataPointers, &currentPointer)
+	if dataPointers[currentPointer] != 1 {
+		t.Errorf("Expected value at pointer %d to be 1, got %d", currentPointer, dataPointers[currentPointer])
+	}
+}

@@ -26,8 +26,8 @@ func processCharacter(char byte, dataPointers *[50000]uint8, currentPointer *uin
 		err = handleMoveLeft(currentPointer)
 	case '+':
 		handleIncrement(dataPointers, currentPointer)
-	// case '-':
-	// 	handleDecrement()
+	case '-':
+		handleDecrement(dataPointers, currentPointer)
 	// case '.':
 	// 	handleOutput()
 	// case ',':
@@ -60,4 +60,8 @@ func handleMoveLeft(currentPointer *uint16) error {
 
 func handleIncrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
 	dataPointers[*currentPointer]++
+}
+
+func handleDecrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
+	dataPointers[*currentPointer]--
 }
