@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/joselws/go-utils/stack"
+)
 
 func TestHandleMoveRight(t *testing.T) {
 	// Test case for moving the pointer to the right
@@ -52,5 +56,52 @@ func TestHandleDecrement(t *testing.T) {
 	handleDecrement(&dataPointers, &currentPointer)
 	if dataPointers[currentPointer] != 1 {
 		t.Errorf("Expected value at pointer %d to be 1, got %d", currentPointer, dataPointers[currentPointer])
+	}
+}
+
+func TestHandleLoopStart(t *testing.T) {
+	// Test case for starting a loop
+	content := []byte("[>++<-]")
+	contentIndex := 0
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+	dataPointers[currentPointer] = 1 // don't skip loop
+	loopPointers := stack.NewStack[int]()
+
+	err := handleLoopStart(content, &contentIndex, loopPointers, &dataPointers, &currentPointer)
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+	if contentIndex != 1 {
+		t.Errorf("Expected content index to be at 1, got %d", contentIndex)
+	}
+	if loopPointers.IsEmpty() {
+		t.Errorf("Expected loop pointers to not be empty, got %d", loopPointers.Len())
+	}
+}
+
+func TestHandleLoopStartSkipLoop(t *testing.T) {
+	// Test case for starting a loop
+	content := []byte("[>++<-]")
+	contentIndex := 0
+	loopPointers := stack.NewStack[int]()
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+
+	err := handleLoopStart(content, &contentIndex, loopPointers, &dataPointers, &currentPointer)
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+	if contentIndex > len(content) {
+		t.Errorf("Expected content index to be at the end (6), got %d", contentIndex)
+	}
+	if dataPointers[0] != 0 {
+		t.Errorf("Expected value at pointer %d to be 0, got %d", currentPointer, dataPointers[currentPointer])
+	}
+	if currentPointer != 0 {
+		t.Errorf("Expected current pointer to be 0, got %d", currentPointer)
+	}
+	if !loopPointers.IsEmpty() {
+		t.Errorf("Expected loop pointers to be empty, got %d", loopPointers.Len())
 	}
 }

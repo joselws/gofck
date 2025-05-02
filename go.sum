@@ -2,3 +2,5 @@ github.com/joselws/go-utils v0.0.0-20250430013936-116566505b42 h1:5HfvbkGkP1Z2ON
 github.com/joselws/go-utils v0.0.0-20250430013936-116566505b42/go.mod h1:yH6ZOcS4UzGfQdOOiVeiGWTlbcN4wBtlVnBeHjC+Hzg=
 github.com/joselws/go-utils v0.0.0-20250430040336-5339e417d4e4 h1:uz4VwX8SZKzLNnLbNLZxFzeZLlx5xldbWhO/QJRdVIk=
 github.com/joselws/go-utils v0.0.0-20250430040336-5339e417d4e4/go.mod h1:yH6ZOcS4UzGfQdOOiVeiGWTlbcN4wBtlVnBeHjC+Hzg=
+github.com/joselws/go-utils v0.0.0-20250430063526-90e3654d134a h1:Bp07RHV2YOsLJmdpMxLbay5ZPXPsSHWfrjjwQ+zQ3lE=
+github.com/joselws/go-utils v0.0.0-20250430063526-90e3654d134a/go.mod h1:yH6ZOcS4UzGfQdOOiVeiGWTlbcN4wBtlVnBeHjC+Hzg=

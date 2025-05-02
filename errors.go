@@ -6,3 +6,4 @@ var ErrInvalidCLIArgsLength = errors.New("invalid number of command line argumen
 var ErrBadFileFormat = errors.New("file does not have .bf extension")
 var ErrFileDoesNotExist = errors.New("file does not exist")
 var ErrInvalidPointer = errors.New("invalid pointer position")
+var ErrInvalidBFSyntax = errors.New("non-matching numbers of brackets")
