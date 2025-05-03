@@ -6,7 +6,7 @@ import (
 	"github.com/joselws/go-utils/stack"
 )
 
-const maxDataSize uint16 = 50000
+const maxDataSize uint16 = 30000
 
 func ProcessBrainFuck(content []byte) error {
 	dataPointers := [maxDataSize]uint8{}
