@@ -72,7 +72,7 @@ func TestHandleLoopStart(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
-	if content[contentIndex] != '>' {
+	if content[contentIndex] != '[' {
 		t.Errorf("Expected content char to be at [, got %c", content[contentIndex])
 	}
 	if loopPointers.IsEmpty() {
@@ -92,7 +92,7 @@ func TestHandleLoopStartSkipLoop(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
-	if content[contentIndex] != '+' {
+	if content[contentIndex] != ']' {
 		t.Errorf("Expected content index to be at the end (6), got %d", contentIndex)
 	}
 	if dataPointers[0] != 0 {

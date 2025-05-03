@@ -12,7 +12,7 @@ func ProcessBrainFuck(content []byte) error {
 	dataPointers := [maxDataSize]uint8{}
 	var currentPointer uint16
 	loopPointers := stack.NewStack[int]()
-	contentSize := len(content)
+	contentSize := len(content) - 1
 	contentIndex := -1
 
 	for contentIndex < contentSize {
@@ -89,7 +89,6 @@ func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stac
 			}
 		}
 	}
-	*contentIndex++
 	return nil
 }
 
