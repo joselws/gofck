@@ -13,9 +13,10 @@ func ProcessBrainFuck(content []byte) error {
 	var currentPointer uint16
 	loopPointers := stack.NewStack[int]()
 	contentSize := len(content)
-	contentIndex := 0
+	contentIndex := -1
 
 	for contentIndex < contentSize {
+		contentIndex++
 		char := content[contentIndex]
 		var err error
 		switch char {
@@ -31,9 +32,8 @@ func ProcessBrainFuck(content []byte) error {
 			handleOutput(&dataPointers, &currentPointer)
 		case '[':
 			err = handleLoopStart(content, &contentIndex, loopPointers, &dataPointers, &currentPointer)
-			// case ']':
-			// 	handleLoopEnd()
-			contentIndex++
+		case ']':
+			err = handleLoopEnd(&contentIndex, loopPointers, &dataPointers, &currentPointer)
 		}
 		if err != nil {
 			return err
@@ -70,9 +70,9 @@ func handleOutput(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
 	fmt.Print(string(dataPointers[*currentPointer]))
 }
 
-// If the byte at the data pointer is zero, skip to the matching ]
+// If the byte at the data pointer is zero, skip to the char after the matching ]
 func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]uint8, currentPointer *uint16) error {
-	loopPointers.Push(*contentIndex)
+	loopPointers.Push(*contentIndex - 1) // deduct the step you get at the start of each loop
 	// skip find the matching ]
 	if dataPointers[*currentPointer] == 0 {
 		for !loopPointers.IsEmpty() {
@@ -90,5 +90,17 @@ func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stac
 		}
 	}
 	*contentIndex++
+	return nil
+}
+
+// Only move the content index forward if the value is zero
+func handleLoopEnd(contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]uint8, currentPointer *uint16) error {
+	startLoopIndex, err := loopPointers.Pop()
+	if err != nil {
+		return ErrInvalidBFSyntax
+	}
+	if dataPointers[*currentPointer] != 0 {
+		*contentIndex = startLoopIndex
+	}
 	return nil
 }

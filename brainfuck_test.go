@@ -61,7 +61,7 @@ func TestHandleDecrement(t *testing.T) {
 
 func TestHandleLoopStart(t *testing.T) {
 	// Test case for starting a loop
-	content := []byte("[>++<-]")
+	content := []byte("[>++<-]+")
 	contentIndex := 0
 	dataPointers := [maxDataSize]uint8{}
 	currentPointer := uint16(0)
@@ -72,8 +72,8 @@ func TestHandleLoopStart(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
-	if contentIndex != 1 {
-		t.Errorf("Expected content index to be at 1, got %d", contentIndex)
+	if content[contentIndex] != '>' {
+		t.Errorf("Expected content char to be at [, got %c", content[contentIndex])
 	}
 	if loopPointers.IsEmpty() {
 		t.Errorf("Expected loop pointers to not be empty, got %d", loopPointers.Len())
@@ -82,7 +82,7 @@ func TestHandleLoopStart(t *testing.T) {
 
 func TestHandleLoopStartSkipLoop(t *testing.T) {
 	// Test case for starting a loop
-	content := []byte("[>++<-]")
+	content := []byte("[>++<-]+")
 	contentIndex := 0
 	loopPointers := stack.NewStack[int]()
 	dataPointers := [maxDataSize]uint8{}
@@ -92,7 +92,7 @@ func TestHandleLoopStartSkipLoop(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
-	if contentIndex > len(content) {
+	if content[contentIndex] != '+' {
 		t.Errorf("Expected content index to be at the end (6), got %d", contentIndex)
 	}
 	if dataPointers[0] != 0 {
@@ -103,5 +103,45 @@ func TestHandleLoopStartSkipLoop(t *testing.T) {
 	}
 	if !loopPointers.IsEmpty() {
 		t.Errorf("Expected loop pointers to be empty, got %d", loopPointers.Len())
+	}
+}
+
+// Move the pointer to the matching [ index if the value at the current pointer is not zero
+func TestHandleLoopEndLoopBack(t *testing.T) {
+	// Test case for ending a loop
+	// content := []byte("[>++<-]+")
+	contentIndex := 6
+	loopPointers := stack.NewStack[int]()
+	loopPointers.Push(-1) // push the start of the loop
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+	dataPointers[currentPointer] = 1 // don't move forward
+
+	handleLoopEnd(&contentIndex, loopPointers, &dataPointers, &currentPointer)
+	if !loopPointers.IsEmpty() {
+		t.Errorf("Expected loop pointers to be empty, got %d", loopPointers.Len())
+	}
+	if contentIndex != -1 {
+		t.Errorf("Expected content index to be at -1, not %d", contentIndex)
+	}
+}
+
+// Move the pointer to the next character if the value at the current pointer is zero
+func TestHandleLoopEndGoForward(t *testing.T) {
+	// Test case for ending a loop
+	content := []byte("[>++<-]+")
+	contentIndex := 6
+	loopPointers := stack.NewStack[int]()
+	loopPointers.Push(-1) // push the start of the loop
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+	dataPointers[currentPointer] = 0 // move forward
+
+	handleLoopEnd(&contentIndex, loopPointers, &dataPointers, &currentPointer)
+	if !loopPointers.IsEmpty() {
+		t.Errorf("Expected loop pointers to be empty, got %d", loopPointers.Len())
+	}
+	if content[contentIndex] != ']' {
+		t.Errorf("Expected content index to be at ], got %c", content[contentIndex])
 	}
 }
