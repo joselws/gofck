@@ -31,8 +31,6 @@ func ProcessBrainFuck(content []byte) (string, error) {
 			handleDecrement(&dataPointers, &currentPointer)
 		case '.':
 			output = handleOutput(&dataPointers, &currentPointer, output)
-		// case ',':
-		// 	handleInput(&dataPointers, &currentPointer)
 		case '[':
 			err = handleLoopStart(content, &contentIndex, loopPointers, &dataPointers, &currentPointer)
 		case ']':
