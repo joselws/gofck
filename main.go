@@ -19,11 +19,12 @@ func main() {
 		return
 	}
 
-	err = ProcessBrainFuck(brainFuckCode)
+	output, err := ProcessBrainFuck(brainFuckCode)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	fmt.Print(output)
 }
 
 func getFileName(args []string) (string, error) {

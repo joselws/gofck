@@ -8,7 +8,7 @@ import (
 
 const maxDataSize uint16 = 30000
 
-func ProcessBrainFuck(content []byte) error {
+func ProcessBrainFuck(content []byte) (string, error) {
 	dataPointers := [maxDataSize]byte{}
 	var currentPointer uint16
 	loopPointers := stack.NewStack[int]()
@@ -39,10 +39,10 @@ func ProcessBrainFuck(content []byte) error {
 			err = handleLoopEnd(&contentIndex, loopPointers, &dataPointers, &currentPointer)
 		}
 		if err != nil {
-			return err
+			return output, err
 		}
 	}
-	return nil
+	return output, nil
 }
 
 func handleMoveRight(currentPointer *uint16) error {
