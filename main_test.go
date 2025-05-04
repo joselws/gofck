@@ -31,8 +31,8 @@ func TestFileDoesNotExist(t *testing.T) {
 	}{
 		{"nonexistentfile.txt", ErrFileDoesNotExist},
 		{"existingfile.txt", ErrBadFileFormat},
-		{"existingfile.bf", nil},
-		{"anotherfile.b", nil},
+		{"example.bf", nil},
+		{"example2.b", nil},
 	}
 
 	for _, test := range tests {

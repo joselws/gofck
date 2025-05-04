@@ -1,4 +1,4 @@
-[ Example taken from wikipedia ]
+[ Example program taken from wikipedia ]
 
 ++       Cell c0 = 2
 > +++++  Cell c1 = 5

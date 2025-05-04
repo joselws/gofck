@@ -1,2 +1,4 @@
 # gofck
-Brainfuck compiler in Go.
+
+Brainfuck interpreter in Go.
+
