@@ -35,13 +35,12 @@ func getFileName(args []string) (string, error) {
 }
 
 func getFileContents(filename string) ([]byte, error) {
-	// Simulate file reading
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return data, ErrFileDoesNotExist
 	}
-	if !strings.HasSuffix(filename, ".bf") {
-		return data, ErrBadFileFormat
+	if strings.HasSuffix(filename, ".bf") || strings.HasSuffix(filename, ".b") {
+		return data, nil
 	}
-	return data, nil
+	return data, ErrBadFileFormat
 }

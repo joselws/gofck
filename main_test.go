@@ -26,18 +26,19 @@ func TestGetFileName(t *testing.T) {
 
 func TestFileDoesNotExist(t *testing.T) {
 	tests := []struct {
-		filename       string
-		expectedResult error
+		filename      string
+		expectedError error
 	}{
 		{"nonexistentfile.txt", ErrFileDoesNotExist},
 		{"existingfile.txt", ErrBadFileFormat},
 		{"existingfile.bf", nil},
+		{"anotherfile.b", nil},
 	}
 
 	for _, test := range tests {
 		_, err := getFileContents(test.filename)
-		if err != test.expectedResult {
-			t.Errorf("fileDoesNotExist(%v); expected %v", test.filename, test.expectedResult)
+		if err != test.expectedError {
+			t.Errorf("Got error: %v on %v; expected: %v", err, test.filename, test.expectedError)
 		}
 	}
 }
