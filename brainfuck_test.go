@@ -145,3 +145,14 @@ func TestHandleLoopEndGoForward(t *testing.T) {
 		t.Errorf("Expected content index to be at ], got %c", content[contentIndex])
 	}
 }
+
+func TestHandleOutput(t *testing.T) {
+	dataPointers := [maxDataSize]uint8{}
+	currentPointer := uint16(0)
+	dataPointers[currentPointer] = '!'
+	output := "Hello World"
+	output = handleOutput(&dataPointers, &currentPointer, output)
+	if output != "Hello World!" {
+		t.Errorf("Output string should be \"Hello World!\", not %s", output)
+	}
+}

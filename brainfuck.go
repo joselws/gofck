@@ -9,11 +9,12 @@ import (
 const maxDataSize uint16 = 30000
 
 func ProcessBrainFuck(content []byte) error {
-	dataPointers := [maxDataSize]uint8{}
+	dataPointers := [maxDataSize]byte{}
 	var currentPointer uint16
 	loopPointers := stack.NewStack[int]()
 	contentSize := len(content) - 1
 	contentIndex := -1
+	var output string
 
 	for contentIndex < contentSize {
 		contentIndex++
@@ -29,7 +30,9 @@ func ProcessBrainFuck(content []byte) error {
 		case '-':
 			handleDecrement(&dataPointers, &currentPointer)
 		case '.':
-			handleOutput(&dataPointers, &currentPointer)
+			output = handleOutput(&dataPointers, &currentPointer, output)
+		// case ',':
+		// 	handleInput(&dataPointers, &currentPointer)
 		case '[':
 			err = handleLoopStart(content, &contentIndex, loopPointers, &dataPointers, &currentPointer)
 		case ']':
@@ -58,20 +61,20 @@ func handleMoveLeft(currentPointer *uint16) error {
 	return nil
 }
 
-func handleIncrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
+func handleIncrement(dataPointers *[maxDataSize]byte, currentPointer *uint16) {
 	dataPointers[*currentPointer]++
 }
 
-func handleDecrement(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
+func handleDecrement(dataPointers *[maxDataSize]byte, currentPointer *uint16) {
 	dataPointers[*currentPointer]--
 }
 
-func handleOutput(dataPointers *[maxDataSize]uint8, currentPointer *uint16) {
-	fmt.Print(string(dataPointers[*currentPointer]))
+func handleOutput(dataPointers *[maxDataSize]byte, currentPointer *uint16, output string) string {
+	return output + fmt.Sprintf("%c", dataPointers[*currentPointer])
 }
 
 // If the byte at the data pointer is zero, skip to the char after the matching ]
-func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]uint8, currentPointer *uint16) error {
+func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]byte, currentPointer *uint16) error {
 	loopPointers.Push(*contentIndex - 1) // deduct the step you get at the start of each loop
 	// skip find the matching ]
 	if dataPointers[*currentPointer] == 0 {
@@ -93,7 +96,7 @@ func handleLoopStart(content []byte, contentIndex *int, loopPointers *stack.Stac
 }
 
 // Only move the content index forward if the value is zero
-func handleLoopEnd(contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]uint8, currentPointer *uint16) error {
+func handleLoopEnd(contentIndex *int, loopPointers *stack.Stack[int], dataPointers *[maxDataSize]byte, currentPointer *uint16) error {
 	startLoopIndex, err := loopPointers.Pop()
 	if err != nil {
 		return ErrInvalidBFSyntax
